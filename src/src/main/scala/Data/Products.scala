@@ -1,7 +1,32 @@
 package Data
 
 object Products {
-  // TODO: step 2 - here your will have an attribute that will contain the products (e.g. "bière"), their types (e.g. "Boxer"), and their prices (e.g. 2.0).
-  // TODO: step 2 - You will also have to find a way to store the default type/brand of a product.
-  ???
+
+  private val products: Map[String, Map[String, Double]] = Map(
+    "Bières" ->
+    Map(  "Boxer" -> 1.0,
+          "Farmer" -> 1.0,
+          "Wittekop" -> 2.0,
+          "PunkIPA" -> 3.0,
+          "Jackhammer" -> 3.0,
+          "Ténébreuse" -> 4.0),
+    "Croissants" ->
+    Map(  "Maison" -> 2.0,
+          "Cailler" -> 2.0))
+
+  def getBeer(brand: String = "Boxer"): Double = {
+    if (products("Bières").contains(brand)) {
+      products("Bières")(brand)
+    } else {
+      throw new Error("Non existing beer")
+    }
+  }
+
+  def getCroissant(_type: String = "Maison"): Double = {
+    if (products("Croissants").contains(_type)) {
+      products("Croissant")(_type)
+    } else {
+      throw new Error("Non existing croissant")
+    }
+  }
 }
