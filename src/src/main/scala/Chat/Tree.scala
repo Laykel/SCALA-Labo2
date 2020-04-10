@@ -14,6 +14,7 @@ object Tree {
       * Compute the price of the current node, then returns it. If the node is not a computational node, the method
       * returns 0.0.
       * For example if we had a "+" node, we would add the values of its two children, then return the result.
+      *
       * @return the result of the computation
       */
     def computePrice: Double = this match {
@@ -29,6 +30,7 @@ object Tree {
 
     /**
       * Return the output text of the current node, in order to write it in console.
+      *
       * @return the output text of the current node
       */
     def reply: String = this match {
@@ -49,18 +51,24 @@ object Tree {
     */
   // Example cases
   case class Thirsty() extends ExprTree
+
   case class Hungry() extends ExprTree
 
   // Request cases
   case class Order(e: ExprTree) extends ExprTree
+
   case class Balance() extends ExprTree
+
   case class Price(e: ExprTree) extends ExprTree
 
   // Operator cases
   case class And(e1: ExprTree, e2: ExprTree) extends ExprTree
+
   case class Or(e1: ExprTree, e2: ExprTree) extends ExprTree
 
   // Product cases
   case class Bier(brand: String) extends ExprTree
+
   case class Croissant(brand: String) extends ExprTree
+
 }

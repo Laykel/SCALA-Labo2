@@ -5,11 +5,13 @@ import Tree._
 
 // TODO - step 4
 class Parser(tokenizer: Tokenizer) {
+
   import tokenizer._
 
   var curTuple: (String, Token) = ("unknown", UNKNOWN)
-  
+
   def curValue: String = curTuple._1
+
   def curToken: Token = curTuple._2
 
   /** Reads the next token and assigns it into the global variable curTuple */
@@ -32,7 +34,7 @@ class Parser(tokenizer: Tokenizer) {
   }
 
   /** the root method of the parser: parses an entry phrase */
-  def parsePhrases() : ExprTree = {
+  def parsePhrases(): ExprTree = {
     if (curToken == BONJOUR) eat(BONJOUR)
     if (curToken == JE) {
       eat(JE)

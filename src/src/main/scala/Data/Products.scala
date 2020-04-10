@@ -1,18 +1,17 @@
 package Data
 
 object Products {
-
   private val products: Map[String, Map[String, Double]] = Map(
     "Bières" ->
-    Map(  "Boxer" -> 1.0,
-          "Farmer" -> 1.0,
-          "Wittekop" -> 2.0,
-          "PunkIPA" -> 3.0,
-          "Jackhammer" -> 3.0,
-          "Ténébreuse" -> 4.0),
+      Map("Boxer" -> 1.0,
+        "Farmer" -> 1.0,
+        "Wittekop" -> 2.0,
+        "PunkIPA" -> 3.0,
+        "Jackhammer" -> 3.0,
+        "Ténébreuse" -> 4.0),
     "Croissants" ->
-    Map(  "Maison" -> 2.0,
-          "Cailler" -> 2.0))
+      Map("Maison" -> 2.0,
+        "Cailler" -> 2.0))
 
   def getBeer(brand: String = "Boxer"): Double = {
     if (products("Bières").contains(brand)) {

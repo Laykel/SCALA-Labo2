@@ -5,6 +5,7 @@ import Utils.Dictionary.dictionary
 object SpellChecker {
   def stringDistance(s1: String, s2: String): Int = {
     val memo = scala.collection.mutable.Map[(String, String), Int]()
+
     def min(a: Int, b: Int, c: Int) = Math.min(Math.min(a, b), c)
 
     def sd(s1: String, s2: String): Int = {

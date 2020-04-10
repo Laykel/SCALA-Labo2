@@ -3,7 +3,6 @@ package Data
 import scala.collection.mutable
 
 object UsersInfo {
-
   // Will contain the name of the currently active user; default value is null.
   private var _activeUser: String = _
 
@@ -11,7 +10,8 @@ object UsersInfo {
 
   /**
     * Update an account by decreasing its balance.
-    * @param user the user whose account will be updated
+    *
+    * @param user   the user whose account will be updated
     * @param amount the amount to decrease
     * @return the new balance
     */
@@ -51,8 +51,7 @@ object UsersInfo {
   def setActiveUser(user: String): Unit = {
     if (!accounts.contains(user)) {
       addUser(user)
-    } 
+    }
     _activeUser = user
   }
-
 }
