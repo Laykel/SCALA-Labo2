@@ -3,6 +3,8 @@ package Chat
 import Chat.Tokens._
 import Tree._
 
+import scala.collection.mutable.ListBuffer
+
 // TODO - step 4
 class Parser(tokenizer: Tokenizer) {
 
@@ -33,11 +35,31 @@ class Parser(tokenizer: Tokenizer) {
     sys.exit(1)
   }
 
+  def getPrice: Any = {
+    var orders: ListBuffer[(Int, String, String)] = ListBuffer()
+    do {
+      var tuple: (Int, String, String) = (null, null, null)
+      tuple = tuple.copy(_1 = curTuple._1.toInt)
+      eat(NUM)
+
+      tuple = tuple.copy(_2 = curTuple._1)
+      if (curToken == BIERE) eat(BIERE)
+      if (curToken == CROISSANT) eat(CROISSANT)
+
+      if (curToken == BRAND) {
+        tuple = tuple.copy(_3 = curTuple._1)
+        eat(BRAND)
+      }
+      orders.append(tuple)
+    } while(curToken != EOL)
+  }
+
   /** the root method of the parser: parses an entry phrase */
   def parsePhrases(): ExprTree = {
     if (curToken == BONJOUR) eat(BONJOUR)
-    if (curToken == JE) {
-      eat(JE)
+    if (curToken == JE) eat(JE)
+    if (curToken == USELESS) eat(USELESS)
+    if (curToken == ETRE) {
       eat(ETRE)
       if (curToken == ASSOIFFE) {
         // Here we do not "eat" the token, because we want to have a custom 2-parameters "expected" if the user gave a wrong token.
@@ -47,12 +69,27 @@ class Parser(tokenizer: Tokenizer) {
       else if (curToken == AFFAME) {
         readToken()
         Hungry()
+      } else if (curToken == PSEUDO) {
+        Identification(curTuple._1.slice(1, curTuple._1.length))
       }
       else expected(ASSOIFFE, AFFAME)
+    } else if (curToken == APPELER) {
+      eat(APPELER)
+      Identification(curTuple._1.slice(1, curTuple._1.length))
+    } else if (curToken == COMBIEN) {
+      eat(COMBIEN)
+      eat(COUTER)
+      getPrice()
+    } else if (curToken == QUEL) {
+      eat(ETRE)
+      eat(USELESS)
+      eat(PRIX)
+      eat(USELESS)
+      getPrice()
     }
     else expected(BONJOUR, JE)
   }
-
   // Start the process by reading the first token.
   readToken()
+
 }

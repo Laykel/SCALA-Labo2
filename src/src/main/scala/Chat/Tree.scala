@@ -1,6 +1,7 @@
 package Chat
 
-import Data.Products
+import Data.{Products, UsersInfo}
+
 import math.min
 
 // TODO - step 3
@@ -40,6 +41,9 @@ object Tree {
       // Request cases
       case Order(e: ExprTree) => s"Tu veux commander ${e.reply}"
       case Price(e: ExprTree) => s"Cela coûte CHF ${e.computePrice}."
+      case Identification(pseudo) =>
+        UsersInfo.setActiveUser(pseudo)
+        s"Bonjour $pseudo !"
       // Product cases
       case Bier(brand: String) => brand
       case Croissant(brand: String) => s"croissant ${brand}"
@@ -60,6 +64,8 @@ object Tree {
   case class Balance() extends ExprTree
 
   case class Price(e: ExprTree) extends ExprTree
+
+  case class Identification(pseudo: String) extends ExprTree
 
   // Operator cases
   case class And(e1: ExprTree, e2: ExprTree) extends ExprTree
