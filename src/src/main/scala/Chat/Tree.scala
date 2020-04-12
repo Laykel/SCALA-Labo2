@@ -21,9 +21,11 @@ object Tree {
       // Products
       case Beer(number: Int, brand: String) => number * Products.getBeer(brand)
       case Croissant(number: Int, brand: String) => number * Products.getCroissant(brand)
+
       // Operators
       case And(e1: ExprTree, e2: ExprTree) => e1.computePrice + e2.computePrice
       case Or(e1: ExprTree, e2: ExprTree) => min(e1.computePrice, e2.computePrice)
+
       // Default
       case _ => 0.0
     }
@@ -37,6 +39,7 @@ object Tree {
       // Example cases
       case Thirsty() => "Eh bien, la chance est de votre côté, car nous offrons les meilleures bières de la région !"
       case Hungry() => "Pas de soucis, nous pouvons notamment vous offrir des croissants faits maisons !"
+
       // Request cases
       case Price(e: ExprTree) => s"Cela coûte CHF ${e.computePrice}"
       case Identification(pseudo) =>
@@ -54,15 +57,16 @@ object Tree {
           s"Le montant actuel de votre solde est de CHF ${UsersInfo.getBalance()}."
         else
           "Veuillez d'abord vous identifier."
+
       // Product cases
       case Beer(number: Int, brand: String) => s"${number} ${if (brand != "") brand else "boxer"}"
       case Croissant(number: Int, brand: String) => s"${number} croissant ${if (brand != "") brand else "maison"}"
+
       // Operator cases
       case Or(e1: ExprTree, e2: ExprTree) =>
-        if (e1.computePrice < e2.computePrice)
-          e1.reply
-        else
-          e2.reply
+        // Only print the cheapest option
+        if (e1.computePrice < e2.computePrice) e1.reply
+        else e2.reply
       case And(e1: ExprTree, e2: ExprTree) => s"${e1.reply} et ${e2.reply}"
     }
   }

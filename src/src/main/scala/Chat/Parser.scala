@@ -5,7 +5,6 @@ import Tree._
 
 import scala.collection.mutable.ListBuffer
 
-// TODO - step 4
 class Parser(tokenizer: Tokenizer) {
 
   import tokenizer._
@@ -35,6 +34,11 @@ class Parser(tokenizer: Tokenizer) {
     sys.exit(1)
   }
 
+  /**
+    * Parse the following tokens as an order request and call buildTree
+    *
+    * @return The complete expression containing all expressions for the order
+    */
   def parseOrder(): ExprTree = {
     val orders: ListBuffer[ExprTree] = ListBuffer()
 
@@ -71,6 +75,12 @@ class Parser(tokenizer: Tokenizer) {
     buildTree(orders.toList)
   }
 
+  /**
+    * Converts a list of expressions into an expression tree
+    *
+    * @param l A list of Expressions to be built into a tree
+    * @return The root expression of the tree
+    */
   def buildTree(l: List[ExprTree]): ExprTree = l match {
     case x :: Nil => x
     case x1 :: x2 :: xs => x2 match {
@@ -79,11 +89,14 @@ class Parser(tokenizer: Tokenizer) {
     }
   }
 
-  /** the root method of the parser: parses an entry phrase */
+  /** The root method of the parser: parses an entry phrase */
   def parsePhrases(): ExprTree = {
+    // Start with optional niceties
     if (curToken == BONJOUR) eat(BONJOUR)
     if (curToken == JE) eat(JE)
     if (curToken == USELESS) eat(USELESS)
+
+    // Then check for the main tokens
     if (curToken == ETRE) {
       eat(ETRE)
       if (curToken == ASSOIFFE) {
@@ -94,40 +107,46 @@ class Parser(tokenizer: Tokenizer) {
       else if (curToken == AFFAME) {
         readToken()
         Hungry()
-      } else if (curToken == PSEUDO) {
+      }
+      else if (curToken == PSEUDO) {
         Identification(curTuple._1.slice(1, curTuple._1.length))
       }
       else expected(ASSOIFFE, AFFAME, PSEUDO)
-    } else if (curToken == APPELER) {
+    }
+    else if (curToken == APPELER) {
       eat(APPELER)
       if (curToken == PSEUDO) {
         Identification(curTuple._1.slice(1, curTuple._1.length))
-      } else expected(PSEUDO)
+      }
+      else expected(PSEUDO)
     } else if (curToken == COMBIEN) {
       eat(COMBIEN)
       eat(COUTER)
       Price(parseOrder())
-    } else if (curToken == QUEL) {
+    }
+    else if (curToken == QUEL) {
       eat(QUEL)
       eat(ETRE)
       eat(USELESS)
       eat(PRIX)
       eat(USELESS)
       Price(parseOrder())
-    } else if (curToken == VOULOIR) {
+    }
+    else if (curToken == VOULOIR) {
       eat(VOULOIR)
       if (curToken == CONNAITRE) {
         eat(CONNAITRE)
         eat(USELESS)
         eat(SOLDE)
         Balance()
-      } else if (curToken == COMMANDER) {
+      }
+      else if (curToken == COMMANDER) {
         eat(COMMANDER)
         Order(parseOrder())
       }
-      else expected(CONNAITRE)
+      else expected(CONNAITRE, COMMANDER)
     }
-    else expected(BONJOUR, JE)
+    else expected(BONJOUR, JE, ETRE, APPELER, COMBIEN, QUEL, VOULOIR)
   }
 
   // Start the process by reading the first token.
