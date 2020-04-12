@@ -35,12 +35,4 @@ object Tokens {
   val AFFAME: Token      = 14
   // Brands
   val BRAND: Token       = 15
-//  val MAISON: Token      = 15
-//  val CAILLER: Token     = 16
-//  val FARMER: Token      = 17
-//  val BOXER: Token       = 18
-//  val WITTEKOP: Token    = 19
-//  val PUNKIPA: Token     = 20
-//  val JACKHAMMER: Token  = 21
-//  val TENEBREUSE: Token  = 22
 }

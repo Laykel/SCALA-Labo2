@@ -1,11 +1,10 @@
 package Data
 
-import scala.collection.mutable
-
 object UsersInfo {
   // Will contain the name of the currently active user; default value is null.
   private var _activeUser: String = _
 
+  // Will contain all the accounts that have logged in the app
   private var accounts: scala.collection.mutable.Map[String, Double] = scala.collection.mutable.Map()
 
   /**
@@ -28,6 +27,12 @@ object UsersInfo {
     accounts(user)
   }
 
+  /**
+    * Add a new user to the registered accounts
+    *
+    * @param user   the username
+    * @param amount the balance of the user
+    */
   def addUser(user: String, amount: Double = 30.0): Any = {
     if (!accounts.contains(user)) {
       if (amount >= 0) {
@@ -40,6 +45,12 @@ object UsersInfo {
     }
   }
 
+  /**
+    * Get the balance of an user
+    *
+    * @param user the username
+    * @return the balance
+    */
   def getBalance(user: String = _activeUser): Double = {
     if (accounts.contains(user)) {
       accounts(user)
@@ -48,8 +59,19 @@ object UsersInfo {
     }
   }
 
+  /**
+    * To know if there is an active user
+    *
+    * @return true if there is, false if not
+    */
   def isThereAnActiveUser: Boolean = if (_activeUser != null) true else false
 
+
+  /**
+    * Change the active user. If the user is not in the registered accounts, create a new account
+    *
+    * @param user the user name
+    */
   def setActiveUser(user: String): Unit = {
     if (!accounts.contains(user)) {
       addUser(user)
