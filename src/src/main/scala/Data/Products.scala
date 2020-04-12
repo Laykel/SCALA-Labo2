@@ -10,7 +10,7 @@ object Products {
         "wittekop" -> 2.0,
         "punkipa" -> 3.0,
         "jackhammer" -> 3.0,
-        "ténébreuse" -> 4.0),
+        "tenebreuse" -> 4.0),
     "Croissants" ->
       Map("maison" -> 2.0,
         "cailler" -> 2.0))
