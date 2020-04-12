@@ -119,6 +119,9 @@ class Parser(tokenizer: Tokenizer) {
         eat(USELESS)
         eat(SOLDE)
         Balance()
+      } else if (curToken == COMMANDER) {
+        eat(COMMANDER)
+        Order(parseOrder())
       }
       else expected(CONNAITRE)
     }

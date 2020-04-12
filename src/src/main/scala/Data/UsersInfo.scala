@@ -15,7 +15,7 @@ object UsersInfo {
     * @param amount the amount to decrease
     * @return the new balance
     */
-  def purchase(user: String, amount: Double): Double = {
+  def purchase(amount: Double, user: String = _activeUser): Double = {
     if (accounts.contains(user)) {
       if (accounts(user) >= amount) {
         accounts(user) -= amount

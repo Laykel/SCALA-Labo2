@@ -33,6 +33,7 @@ object Dictionary {
     "coûte" -> "couter",
     "coûtent" -> "couter",
     "connaitre" -> "connaitre",
+    "commander" -> "commander",
     "quel" -> "quel",
     "est" -> "etre",
     "le" -> "le",

@@ -4,7 +4,6 @@ import Data.{Products, UsersInfo}
 
 import math.min
 
-// TODO - step 3
 object Tree {
 
   /**
@@ -39,19 +38,32 @@ object Tree {
       case Thirsty() => "Eh bien, la chance est de votre côté, car nous offrons les meilleures bières de la région !"
       case Hungry() => "Pas de soucis, nous pouvons notamment vous offrir des croissants faits maisons !"
       // Request cases
-      case Order(e: ExprTree) => s"Tu veux commander ${e.reply}"
-      case Price(e: ExprTree) => s"Cela coûte CHF ${e.computePrice}."
+      case Price(e: ExprTree) => s"Cela coûte CHF ${e.computePrice}"
+      case Identification(pseudo) =>
+        UsersInfo.setActiveUser(pseudo)
+        s"Bonjour $pseudo !"
+      case Order(e: ExprTree) =>
+        if (UsersInfo.isThereAnActiveUser) {
+          UsersInfo.purchase(e.computePrice)
+          s"Voici donc ${e.reply} ! ${Price(e).reply} et votre nouveau solde est de CHF ${UsersInfo.getBalance()}."
+        } else {
+          "Veuillez d'abord vous identifier."
+        }
       case Balance() =>
         if (UsersInfo.isThereAnActiveUser)
           s"Le montant actuel de votre solde est de CHF ${UsersInfo.getBalance()}."
         else
           "Veuillez d'abord vous identifier."
-      case Identification(pseudo) =>
-        UsersInfo.setActiveUser(pseudo)
-        s"Bonjour $pseudo !"
       // Product cases
-      case Beer(_, brand: String) => brand
-      case Croissant(_, brand: String) => s"croissant ${brand}"
+      case Beer(number: Int, brand: String) => s"${number} ${if (brand != "") brand else "boxer"}"
+      case Croissant(number: Int, brand: String) => s"${number} croissant ${if (brand != "") brand else "maison"}"
+      // Operator cases
+      case Or(e1: ExprTree, e2: ExprTree) =>
+        if (e1.computePrice < e2.computePrice)
+          e1.reply
+        else
+          e2.reply
+      case And(e1: ExprTree, e2: ExprTree) => s"${e1.reply} et ${e2.reply}"
     }
   }
 
@@ -66,7 +78,6 @@ object Tree {
   case class Order(e: ExprTree) extends ExprTree
   case class Balance() extends ExprTree
   case class Price(e: ExprTree) extends ExprTree
-
   case class Identification(pseudo: String) extends ExprTree
 
   // Operator cases
