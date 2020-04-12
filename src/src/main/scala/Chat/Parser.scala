@@ -100,7 +100,9 @@ class Parser(tokenizer: Tokenizer) {
       else expected(ASSOIFFE, AFFAME, PSEUDO)
     } else if (curToken == APPELER) {
       eat(APPELER)
-      Identification(curTuple._1.slice(1, curTuple._1.length))
+      if (curToken == PSEUDO) {
+        Identification(curTuple._1.slice(1, curTuple._1.length))
+      } else expected(PSEUDO)
     } else if (curToken == COMBIEN) {
       eat(COMBIEN)
       eat(COUTER)
