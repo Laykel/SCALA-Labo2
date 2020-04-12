@@ -3,29 +3,29 @@ package Data
 object Products {
   private val products: Map[String, Map[String, Double]] = Map(
     "Bières" ->
-      Map("Boxer" -> 1.0,
-        "Farmer" -> 1.0,
-        "Wittekop" -> 2.0,
-        "PunkIPA" -> 3.0,
-        "Jackhammer" -> 3.0,
-        "Ténébreuse" -> 4.0),
+      Map("boxer" -> 1.0,
+        "farmer" -> 1.0,
+        "wittekop" -> 2.0,
+        "punkipa" -> 3.0,
+        "jackhammer" -> 3.0,
+        "ténébreuse" -> 4.0),
     "Croissants" ->
-      Map("Maison" -> 2.0,
-        "Cailler" -> 2.0))
+      Map("maison" -> 2.0,
+        "cailler" -> 2.0))
 
-  def getBeer(brand: String = "Boxer"): Double = {
+  def getBeer(brand: String): Double = {
     if (products("Bières").contains(brand)) {
       products("Bières")(brand)
     } else {
-      throw new Error("Non existing beer")
+      products("Bières")("boxer")
     }
   }
 
-  def getCroissant(_type: String = "Maison"): Double = {
+  def getCroissant(_type: String): Double = {
     if (products("Croissants").contains(_type)) {
-      products("Croissant")(_type)
+      products("Croissants")(_type)
     } else {
-      throw new Error("Non existing croissant")
+      products("Croissants")("maison")
     }
   }
 }

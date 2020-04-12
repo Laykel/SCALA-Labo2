@@ -6,7 +6,7 @@ import Utils.SpellChecker._
 
 class Tokenizer(input: String) {
   var tokens: Array[(String, Token)] = Array()
-  var currentTokenIndex = -1
+  var currentTokenIndex: Token = -1
 
   private def getTokenFromString(s: String): Token = s match {
     case "bonjour" => BONJOUR
@@ -49,16 +49,16 @@ class Tokenizer(input: String) {
       .split(" ")
       .filterNot(_.isEmpty)
 
-    // Get each word's occurence in the dictionary or check for the closest word if it is not contained in the dictionary.
-    val fromDictionnary = words.map(w => dictionary.getOrElse(w, getClosestWordInDictionary(w)))
+    // Get each word's occurrence in the dictionary or check for the closest word if it's not contained in the dictionary.
+    val fromDictionary = words.map(w => dictionary.getOrElse(w, getClosestWordInDictionary(w)))
 
-    tokens = fromDictionnary.map(t => (t, getTokenFromString(t)))
+    tokens = fromDictionary.map(t => (t, getTokenFromString(t)))
   }
 
   def nextToken(): (String, Token) = {
     currentTokenIndex += 1
 
-    if (currentTokenIndex < tokens.size) tokens(currentTokenIndex)
+    if (currentTokenIndex < tokens.length) tokens(currentTokenIndex)
     else ("EOL", EOL)
   }
 }

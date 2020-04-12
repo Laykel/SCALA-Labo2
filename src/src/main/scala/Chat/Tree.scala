@@ -20,8 +20,8 @@ object Tree {
       */
     def computePrice: Double = this match {
       // Products
-      case Bier(brand: String) => Products.getBeer(brand)
-      case Croissant(brand: String) => Products.getCroissant(brand)
+      case Beer(number: Int, brand: String) => number * Products.getBeer(brand)
+      case Croissant(number: Int, brand: String) => number * Products.getCroissant(brand)
       // Operators
       case And(e1: ExprTree, e2: ExprTree) => e1.computePrice + e2.computePrice
       case Or(e1: ExprTree, e2: ExprTree) => min(e1.computePrice, e2.computePrice)
@@ -45,8 +45,8 @@ object Tree {
         UsersInfo.setActiveUser(pseudo)
         s"Bonjour $pseudo !"
       // Product cases
-      case Bier(brand: String) => brand
-      case Croissant(brand: String) => s"croissant ${brand}"
+      case Beer(_, brand: String) => brand
+      case Croissant(_, brand: String) => s"croissant ${brand}"
     }
   }
 
@@ -55,26 +55,21 @@ object Tree {
     */
   // Example cases
   case class Thirsty() extends ExprTree
-
   case class Hungry() extends ExprTree
 
   // Request cases
   case class Order(e: ExprTree) extends ExprTree
-
   case class Balance() extends ExprTree
-
   case class Price(e: ExprTree) extends ExprTree
 
   case class Identification(pseudo: String) extends ExprTree
 
   // Operator cases
   case class And(e1: ExprTree, e2: ExprTree) extends ExprTree
-
   case class Or(e1: ExprTree, e2: ExprTree) extends ExprTree
 
   // Product cases
-  case class Bier(brand: String) extends ExprTree
-
-  case class Croissant(brand: String) extends ExprTree
+  case class Beer(number: Int, brand: String) extends ExprTree
+  case class Croissant(number: Int, brand: String) extends ExprTree
 
 }

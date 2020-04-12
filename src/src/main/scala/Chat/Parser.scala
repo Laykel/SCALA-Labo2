@@ -35,23 +35,67 @@ class Parser(tokenizer: Tokenizer) {
     sys.exit(1)
   }
 
-  def getPrice: Any = {
-    var orders: ListBuffer[(Int, String, String)] = ListBuffer()
+//  def getPrice: Any = {
+//    var orders: ListBuffer[(Int, String, String)] = ListBuffer()
+//    do {
+//      var tuple: (Int, String, String) = (null, null, null)
+//      tuple = tuple.copy(_1 = curTuple._1.toInt)
+//      eat(NUM)
+//
+//      tuple = tuple.copy(_2 = curTuple._1)
+//      if (curToken == BIERE) eat(BIERE)
+//      if (curToken == CROISSANT) eat(CROISSANT)
+//
+//      if (curToken == BRAND) {
+//        tuple = tuple.copy(_3 = curTuple._1)
+//        eat(BRAND)
+//      }
+//      orders.append(tuple)
+//    } while(curToken != EOL)
+//  }
+
+  def parseOrder(): ExprTree = {
+    val orders: ListBuffer[ExprTree] = ListBuffer()
+
     do {
-      var tuple: (Int, String, String) = (null, null, null)
-      tuple = tuple.copy(_1 = curTuple._1.toInt)
+      val number = curTuple._1.toInt
       eat(NUM)
 
-      tuple = tuple.copy(_2 = curTuple._1)
-      if (curToken == BIERE) eat(BIERE)
-      if (curToken == CROISSANT) eat(CROISSANT)
+      val product: Token = curToken
+      eat(product)
 
+      var brand: String = ""
       if (curToken == BRAND) {
-        tuple = tuple.copy(_3 = curTuple._1)
+        brand = curTuple._1
         eat(BRAND)
       }
-      orders.append(tuple)
-    } while(curToken != EOL)
+
+      if (product == BIERE) {
+        orders.append(Beer(number, brand))
+      }
+      else if (product == CROISSANT) {
+        orders.append(Croissant(number, brand))
+      }
+
+      if (curToken == OU) {
+        orders.append(Or(null, null))
+        eat(OU)
+      }
+      else if (curToken == ET) {
+        orders.append(And(null, null))
+        eat(ET)
+      }
+    } while (curToken != EOL)
+
+    buildTree(orders.toList)
+  }
+
+  def buildTree(l: List[ExprTree]): ExprTree = l match {
+    case x :: Nil => x
+    case x1 :: x2 :: xs => x2 match {
+      case Or(_, _) => buildTree(Or(x1, xs.head) :: xs.tail)
+      case And(_, _) => buildTree(And(x1, xs.head) :: xs.tail)
+    }
   }
 
   /** the root method of the parser: parses an entry phrase */
@@ -79,16 +123,18 @@ class Parser(tokenizer: Tokenizer) {
     } else if (curToken == COMBIEN) {
       eat(COMBIEN)
       eat(COUTER)
-      getPrice()
+      Price(parseOrder())
     } else if (curToken == QUEL) {
+      eat(QUEL)
       eat(ETRE)
       eat(USELESS)
       eat(PRIX)
       eat(USELESS)
-      getPrice()
+      Price(parseOrder())
     }
     else expected(BONJOUR, JE)
   }
+
   // Start the process by reading the first token.
   readToken()
 
