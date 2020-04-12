@@ -47,8 +47,12 @@ object Tree {
         s"Bonjour $pseudo !"
       case Order(e: ExprTree) =>
         if (UsersInfo.isThereAnActiveUser) {
-          UsersInfo.purchase(e.computePrice)
-          s"Voici donc ${e.reply} ! ${Price(e).reply} et votre nouveau solde est de CHF ${UsersInfo.getBalance()}."
+          try {
+            UsersInfo.purchase(e.computePrice)
+            s"Voici donc ${e.reply} ! ${Price(e).reply} et votre nouveau solde est de CHF ${UsersInfo.getBalance()}."
+          } catch  {
+            case e: Error => "Solde insuffisant."
+          }
         } else {
           "Veuillez d'abord vous identifier."
         }
