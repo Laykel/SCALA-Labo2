@@ -35,25 +35,6 @@ class Parser(tokenizer: Tokenizer) {
     sys.exit(1)
   }
 
-//  def getPrice: Any = {
-//    var orders: ListBuffer[(Int, String, String)] = ListBuffer()
-//    do {
-//      var tuple: (Int, String, String) = (null, null, null)
-//      tuple = tuple.copy(_1 = curTuple._1.toInt)
-//      eat(NUM)
-//
-//      tuple = tuple.copy(_2 = curTuple._1)
-//      if (curToken == BIERE) eat(BIERE)
-//      if (curToken == CROISSANT) eat(CROISSANT)
-//
-//      if (curToken == BRAND) {
-//        tuple = tuple.copy(_3 = curTuple._1)
-//        eat(BRAND)
-//      }
-//      orders.append(tuple)
-//    } while(curToken != EOL)
-//  }
-
   def parseOrder(): ExprTree = {
     val orders: ListBuffer[ExprTree] = ListBuffer()
 
@@ -116,7 +97,7 @@ class Parser(tokenizer: Tokenizer) {
       } else if (curToken == PSEUDO) {
         Identification(curTuple._1.slice(1, curTuple._1.length))
       }
-      else expected(ASSOIFFE, AFFAME)
+      else expected(ASSOIFFE, AFFAME, PSEUDO)
     } else if (curToken == APPELER) {
       eat(APPELER)
       Identification(curTuple._1.slice(1, curTuple._1.length))
@@ -131,6 +112,15 @@ class Parser(tokenizer: Tokenizer) {
       eat(PRIX)
       eat(USELESS)
       Price(parseOrder())
+    } else if (curToken == VOULOIR) {
+      eat(VOULOIR)
+      if (curToken == CONNAITRE) {
+        eat(CONNAITRE)
+        eat(USELESS)
+        eat(SOLDE)
+        Balance()
+      }
+      else expected(CONNAITRE)
     }
     else expected(BONJOUR, JE)
   }

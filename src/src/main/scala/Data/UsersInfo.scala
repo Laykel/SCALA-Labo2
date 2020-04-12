@@ -48,6 +48,8 @@ object UsersInfo {
     }
   }
 
+  def isThereAnActiveUser: Boolean = if (_activeUser != null) true else false
+
   def setActiveUser(user: String): Unit = {
     if (!accounts.contains(user)) {
       addUser(user)

@@ -20,12 +20,15 @@ class Tokenizer(input: String) {
     case "assoiffe" => ASSOIFFE
     case "affame" => AFFAME
     case "me" => USELESS
+    case "mon" => USELESS
     case "appeler" => APPELER
     case "combien" => COMBIEN
     case "couter" => COUTER
+    case "connaitre" => CONNAITRE
     case "quel" => QUEL
     case "le" => USELESS
     case "prix" => PRIX
+    case "solde" => SOLDE
     case "de" => USELESS
     case "maison" => BRAND
     case "cailler" => BRAND

@@ -41,6 +41,11 @@ object Tree {
       // Request cases
       case Order(e: ExprTree) => s"Tu veux commander ${e.reply}"
       case Price(e: ExprTree) => s"Cela coûte CHF ${e.computePrice}."
+      case Balance() =>
+        if (UsersInfo.isThereAnActiveUser)
+          s"Le montant actuel de votre solde est de CHF ${UsersInfo.getBalance()}."
+        else
+          "Veuillez d'abord vous identifier."
       case Identification(pseudo) =>
         UsersInfo.setActiveUser(pseudo)
         s"Bonjour $pseudo !"
